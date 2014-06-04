@@ -17,8 +17,8 @@ class QAppIndicator: public QObject
 Q_OBJECT
 
 public:
-	QAppIndicator(QString &id, QString &iconName, AppIndicatorCategory category);
-	QAppIndicator(QString &id, QString &iconName, AppIndicatorCategory category, QString &iconThemePath);
+	QAppIndicator(QString id, QString iconName, AppIndicatorCategory category);
+	QAppIndicator(QString id, QString iconName, AppIndicatorCategory category, QString iconThemePath);
 
 	QString id();
 	AppIndicatorCategory category();
@@ -26,26 +26,30 @@ public:
 	void setStatus(AppIndicatorStatus status);
 	AppIndicatorStatus status();
 
+	/**
+	 * @brief setMenu set menu and show all menu items
+	 * @param menu
+	 */
 	void setMenu(GtkMenu *menu);
 	GtkMenu* menu();
 
-	void setAttentionIcon(QString &iconName);
-	void setAttentionIconFull(QString &iconName, QString &iconDesc);
+	void setAttentionIcon(QString iconName);
+	void setAttentionIconFull(QString iconName, QString iconDesc);
 	QString attentionIcon();
 	QString attentionIconDesc();
 
-	void setIcon(QString &iconName);
-	void setIconFull(QString &iconName, QString &iconDesc);
-	void setIconThemePath(QString &iconThemePath);
+	void setIcon(QString iconName);
+	void setIconFull(QString iconName, QString iconDesc);
+	void setIconThemePath(QString iconThemePath);
 	QString icon();
 	QString iconDesc();
 	QString iconThemePath();
 
-	void setLabel(QString &label, QString &guide);
+	void setLabel(QString label, QString guide);
 	QString label();
 	QString labelGuide();
 
-	void setTitle(QString &title);
+	void setTitle(QString title);
 	QString title();
 
 	void setOrderingIndex(quint32 orderingIndex);
@@ -54,10 +58,10 @@ public:
 	void setSecondaryActivateTarget(GtkWidget *menuitem);
 	GtkWidget *secondaryActivateTarget();
 
-	void buildMenuFromDesktop(QString &desktopFile, QString &desktopProfile);
+	void buildMenuFromDesktop(QString desktopFile, QString desktopProfile);
 
 private:
-	void init(QString &id, QString &iconName, AppIndicatorCategory category, QString &iconThemePath);
+	void init(QString id, QString iconName, AppIndicatorCategory category, QString iconThemePath);
 private:
 	AppIndicator *self_;
 };

@@ -1,16 +1,16 @@
 #include "qappindicator.h"
 
-QAppIndicator::QAppIndicator(QString &id, QString &iconName, AppIndicatorCategory category, QString &iconThemePath)
+QAppIndicator::QAppIndicator(QString id, QString iconName, AppIndicatorCategory category, QString iconThemePath)
 {
 	init(id, iconName, category, iconThemePath);
 }
-QAppIndicator::QAppIndicator(QString &id, QString &iconName, AppIndicatorCategory category)
+QAppIndicator::QAppIndicator(QString id, QString iconName, AppIndicatorCategory category)
 {
-	QString iconThemePath;
-	init(id, iconName, category, iconThemePath);
+	init(id, iconName, category, QStringLiteral(""));
 }
-void QAppIndicator::init(QString &id, QString &iconName, AppIndicatorCategory category, QString &iconThemePath)
+void QAppIndicator::init(QString id, QString iconName, AppIndicatorCategory category, QString iconThemePath)
 {
+	::gtk_init_check(NULL, NULL);
 	if (iconThemePath.isEmpty())
 	{
 		self_ = ::app_indicator_new(id.toStdString().c_str(), iconName.toStdString().c_str(),
@@ -43,7 +43,8 @@ AppIndicatorStatus QAppIndicator::status()
 }
 
 void QAppIndicator::setMenu(GtkMenu *menu)
-{
+{	
+	::gtk_widget_show_all(GTK_WIDGET(menu));
 	::app_indicator_set_menu(self_, menu);
 }
 GtkMenu* QAppIndicator::menu()
@@ -51,11 +52,11 @@ GtkMenu* QAppIndicator::menu()
 	return ::app_indicator_get_menu(self_);
 }
 
-void QAppIndicator::setAttentionIcon(QString &iconName)
+void QAppIndicator::setAttentionIcon(QString iconName)
 {
 	::app_indicator_set_attention_icon(self_, iconName.toStdString().c_str());
 }
-void QAppIndicator::setAttentionIconFull(QString &iconName, QString &iconDesc)
+void QAppIndicator::setAttentionIconFull(QString iconName, QString iconDesc)
 {
 	::app_indicator_set_attention_icon_full(self_, iconName.toStdString().c_str(), iconDesc.toStdString().c_str());
 }
@@ -68,15 +69,15 @@ QString QAppIndicator::attentionIconDesc()
 	return QString::fromUtf8(::app_indicator_get_attention_icon_desc(self_));
 }
 
-void QAppIndicator::setIcon(QString &iconName)
+void QAppIndicator::setIcon(QString iconName)
 {
 	::app_indicator_set_icon(self_, iconName.toStdString().c_str());
 }
-void QAppIndicator::setIconFull(QString &iconName, QString &iconDesc)
+void QAppIndicator::setIconFull(QString iconName, QString iconDesc)
 {
 	::app_indicator_set_icon_full(self_, iconName.toStdString().c_str(), iconDesc.toStdString().c_str());
 }
-void QAppIndicator::setIconThemePath(QString &iconThemePath)
+void QAppIndicator::setIconThemePath(QString iconThemePath)
 {
 	::app_indicator_set_icon_theme_path(self_, iconThemePath.toStdString().c_str());
 }
@@ -93,7 +94,7 @@ QString QAppIndicator::iconThemePath()
 	return QString::fromUtf8(::app_indicator_get_icon_theme_path(self_));
 }
 
-void QAppIndicator::setLabel(QString &label, QString &guide)
+void QAppIndicator::setLabel(QString label, QString guide)
 {
 	::app_indicator_set_label(self_, label.toStdString().c_str(), guide.toStdString().c_str());
 }
@@ -106,7 +107,7 @@ QString QAppIndicator::labelGuide()
 	return QString::fromUtf8(::app_indicator_get_label_guide(self_));
 }
 
-void QAppIndicator::setTitle(QString &title)
+void QAppIndicator::setTitle(QString title)
 {
 	::app_indicator_set_title(self_, title.toStdString().c_str());
 }
@@ -133,7 +134,7 @@ GtkWidget *QAppIndicator::secondaryActivateTarget()
 	return ::app_indicator_get_secondary_activate_target(self_);
 }
 
-void QAppIndicator::buildMenuFromDesktop(QString &desktopFile, QString &desktopProfile)
+void QAppIndicator::buildMenuFromDesktop(QString desktopFile, QString desktopProfile)
 {
 	::app_indicator_build_menu_from_desktop(self_, desktopFile.toStdString().c_str(),
 			desktopProfile.toStdString().c_str());
