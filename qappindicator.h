@@ -2,15 +2,13 @@
 #define QAPPINDICATOR_H
 
 #include <QObject>
-#define QT_SIGNALS_ signals
 #undef signals
 extern "C"
 {
 #include <gtk/gtk.h>
 #include <libappindicator/app-indicator.h>
 }
-#define signals QT_SIGNALS_
-#undef QT_SIGNALS_
+#define signals public
 
 class QAppIndicator: public QObject
 {
